@@ -2,6 +2,7 @@
 #include <cmath>
 using namespace std;
 #define data_size 20
+#define print_leading_zeros false
 int ctoi(char c); //convert a char to an integer
 void reverse(char p[]); //reverse a c-string
 class big

@@ -9,5 +9,5 @@ int main()
 	cin >> newbie;
 	cout << "n ";
 	cin >> addval;
-		cout << newbie << "+" << addval << "=" << newbie + addval << endl;
+	cout << newbie << "+"<< addval << "=" << newbie + addval << endl;
 }
