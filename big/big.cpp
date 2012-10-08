@@ -36,10 +36,13 @@ big::big()
 	}
 }
 
-big::big(int other)
+big::big(int other) /*unfinished*/
 {
 	value = new int[data_size];
-	other = 0;
+	for (int i = 0; i < data_size; i++)
+	{
+		//do something here (thats the unfinished part)
+	}
 	if (other >= 0)
 	{
 		sign = 1;
