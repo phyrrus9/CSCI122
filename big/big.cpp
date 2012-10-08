@@ -41,6 +41,7 @@ big::big(int other) /*unfinished*/
 	value = new int[data_size];
 	for (int i = 0; i < data_size; i++)
 	{
+		value[i] = 0;
 		//do something here (thats the unfinished part)
 	}
 	if (other >= 0)
@@ -82,7 +83,7 @@ big operator+(const big & lhs, const big & rhs)
 	if ((rhs < 0) && (lhs < 0))
 	{
 		cout << "-(A+B)" << endl;
-		operator+(-lhs, -rhs);
+		//operator+(-lhs, -rhs);
 	}
 	if ((rhs >= 0) && (lhs >= 0))
 	{
@@ -114,21 +115,54 @@ big operator-(const big & rhs)
 
 big operator-(const big & lhs, const big & rhs)/*unfinished & broken*/
 {
-	big newbie;
+	big newbie(lhs);
     int i, borrow;
     borrow = 0;
-    for (i = 0; i < data_size + 1; i++)
+    for (i = 0; i < data_size; i++)
     {
-        if (lhs.value[i] != rhs.value[i])
-        cout << lhs.value[i] << "-" << rhs.value[i] << endl;
-        newbie.value[i] = (borrow + lhs.value[i]) - rhs.value[i];
+		cout << "[-]" << lhs.value[i] << "<->" << rhs.value[i] << endl;
+        if (newbie.value[i] < rhs.value[i])
+		{
+			cout << "gtr" << endl;
+			newbie.value[i] += 10;
+			newbie.value[i - 1]--;
+		}
+		newbie.value[i] -= rhs.value[i];
+		
     }
 	return newbie;
 }
 
-big operator*(const big &lhs, const big & rhs)/*unfinished*/
+big operator*(const big &lhs, const big & rhs)/*broken*/
 {
 	big newbie;
+	int outer, inner, carry, math = 0;
+	if (lhs.sign < 0 ^ rhs.sign < 0) //ONE sign
+		newbie.sign = -1;
+	for (outer = 0, carry = 0; outer < data_size; outer++)
+	{
+		for (inner = 0; inner < data_size; inner++)
+		{
+			math = inner + outer;
+			carry = 0;
+			bool dw = true;
+			if (math >= data_size)
+				dw = false;
+			if (dw)
+			{
+				newbie.value[math] += rhs.value[outer] * lhs.value[inner] + carry;
+				if (newbie.value[math] > 9)
+				{
+					carry = newbie.value[math] % 10;
+					newbie.value[math] += newbie.value[math] % 10;
+				}
+				else
+				{
+					carry = 0;
+				}
+			}
+		}
+	}
 	return newbie;
 }
 
@@ -167,6 +201,8 @@ int operator!=(const big & lhs, const big & rhs)
 
 int operator<(const big & lhs, const big & rhs)
 {
+	if (lhs.sign < 0 && rhs.sign < 0)
+		return (lhs > rhs);
 	for (int i = data_size - 1; i >= 0; i--)
 	{
 		if ((lhs.value[i] < rhs.value[i]) || (lhs.sign < rhs.sign))
@@ -179,7 +215,6 @@ int operator<(const big & lhs, const big & rhs)
 
 int operator>(const big & lhs, const big & rhs)
 {
-
 	for (int i = data_size - 1; i >= 0; i--)
 	{
 		if ((lhs.value[i] > rhs.value[i]) || (lhs.sign > rhs.sign))
@@ -243,7 +278,7 @@ ostream & operator<<(ostream & lhs, const big & rhs)
 		cout << "-";
 	for (int i = data_size - 1; i >= 0; i--)
 	{
-        if (rhs.value[i] != 0)
+        if (rhs.value[i] != 0 || i == 0)
             hasprint = true;
         if (hasprint)
             lhs << rhs.value[i];
