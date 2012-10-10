@@ -36,14 +36,27 @@ big::big()
 	}
 }
 
-big::big(int other) /*unfinished*/
+big::big(int other)
 {
 	value = new int[data_size];
 	for (int i = 0; i < data_size; i++)
 	{
-		value[i] = 0;
-		//do something here (thats the unfinished part)
+		value[i] = 0;//init everything to 0 so we dont get overflows
 	}
+    value[0] = other;
+    bool done = false;
+    for (int x = 0; !done; x++)
+    {
+        while (value[x] > 9)
+        {
+            value[x] -= 10;/Users/phyrrus9/Desktop/IMG_4782.jpg
+            value[x+1] ++;
+        }
+        if (value[x] <= 9)
+        {
+            done = true;
+        }
+    }
 	if (other >= 0)
 	{
 		sign = 1;
@@ -133,11 +146,11 @@ big operator-(const big & lhs, const big & rhs)/*unfinished & broken*/
 	return newbie;
 }
 
-big operator*(const big &lhs, const big & rhs)/*broken*/
-{
+//big operator*(const big &lhs, const big & rhs)/*broken see note block*/
+/*{
 	big newbie;
 	int outer, inner, carry, math = 0;
-	if (lhs.sign < 0 ^ rhs.sign < 0) //ONE sign
+	if (lhs.sign < 0 xor rhs.sign < 0) //ONE sign
 		newbie.sign = -1;
 	for (outer = 0, carry = 0; outer < data_size; outer++)
 	{
@@ -145,11 +158,8 @@ big operator*(const big &lhs, const big & rhs)/*broken*/
 		{
 			math = inner + outer;
 			carry = 0;
-			bool dw = true;
-			if (math >= data_size)
-				dw = false;
-			if (dw)
-			{
+			if (math < data_size)
+            {
 				newbie.value[math] += rhs.value[outer] * lhs.value[inner] + carry;
 				if (newbie.value[math] > 9)
 				{
@@ -164,6 +174,41 @@ big operator*(const big &lhs, const big & rhs)/*broken*/
 		}
 	}
 	return newbie;
+}*/
+
+big operator* (const big& lhs, const big& rhs)
+  {
+  big newbie;
+  int inner;
+  int outer;
+  int carry;
+  const int SIZE = data_size;
+  for (outer = 0; outer < SIZE; outer++)
+    {
+    carry = 0;
+    for (inner = 0; inner < SIZE; inner++)
+      {
+      if (outer+inner<SIZE)
+        {
+        newbie.value[inner+outer] += rhs.value[outer] *
+          lhs.value[inner] + carry;
+        if (newbie.value[inner+outer] > 9)
+          {
+          carry = newbie.value[inner+outer] / 10;
+          newbie.value[inner+outer] =
+            newbie.value[inner+outer]%10;
+          }
+        else carry = 0;
+        }
+      }
+    }
+  if ((lhs.sign ==  1) && (rhs.sign ==  1)) newbie.sign = 1;
+  if ((lhs.sign == -1) && (rhs.sign == -1)) newbie.sign = 1;
+  if ((lhs.sign == -1) && (rhs.sign ==  1)) newbie.sign = -1;
+  if ((lhs.sign ==  1) && (rhs.sign == -1)) newbie.sign = -1;
+
+
+  return newbie;
 }
 
 big operator/(const big & lhs, const big & rhs)/*unfinished*/

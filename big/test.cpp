@@ -5,9 +5,9 @@ int main()
 	cout << "Data size: " << sizeof(big) << endl;
 	int i;
 	big newbie, addval;
-	cout << "? ";
+	cout << "1: ";
 	cin >> newbie;
-	cout << "n ";
+	cout << "2. ";
 	cin >> addval;
-	cout << newbie << "/"<< addval << "=" << newbie / addval << endl;
+	cout << newbie << "*"<< addval << "=" << operator*(newbie,addval) << endl;
 }
