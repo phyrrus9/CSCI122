@@ -14,6 +14,10 @@ public:
 	big();
 	big(int other);
 	big(const big &other);
+	big(const int *array, const int in_sign);
+
+	void set(const int array[data_size], const int in_sign);
+
 	friend big operator+(const big & lhs, const big & rhs);
         friend big operator-(const big & lhs, const big & rhs);
         friend big operator*(const big & lhs, const big & rhs);
@@ -37,4 +41,7 @@ public:
 
 	big& operator++();
 	big& operator--();
+
+	friend void helper(const int lhs[], const int rhs[], int div[], int mod[]);
 };
+
